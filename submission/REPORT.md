@@ -4,7 +4,7 @@
 
 - Tên nhóm: _F1 Speed_
 - Repository URL: https://github.com/binh39/K3-DAY13-2A202601091-NguyenDinhBinh
-- Commit SHA cuối: 4b8bbfe (cập nhật sau khi commit phần QA/Report của người E)
+- Commit SHA phần evidence cuối: `e6ee041` (docs: finalize submission evidence and file paths)
 - Thành viên và vai trò:
   - Đồng Đại Huy (2A202601901) — API & Middleware: triển khai CP1 Middleware, gán Correlation ID và bổ sung exception handler mở rộng.
   - Phạm Đức Trung (2A202601253) — Security Engineer: triển khai PII scrubbing, mở rộng regex PII và kiểm chứng log không lộ dữ liệu nhạy cảm.
