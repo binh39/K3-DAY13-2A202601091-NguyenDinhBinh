@@ -34,7 +34,7 @@
 ## 5. Dashboard, SLO và alerts
 
 - Kết quả `validate_dashboard.py`: HỢP LỆ: 6/6 panel có trong dashboard contract. (xem `submission/evidence/validate_dashboard_output.txt`)
-- Evidence dashboard: `submission/evidence/screendashboard.png` (đủ 6 panel: latency, traffic, errors, cost, tokens, quality — tên panel + time range hiển thị rõ). Lưu ý: ảnh chụp lúc panel Errors đang ở 37.50% (VUOT NGUONG) vì log có lẫn dữ liệu từ một đợt test bật incident `tool_fail` để kiểm chứng cơ chế threshold; không phản ánh trạng thái lỗi thật của hệ thống.
+- Evidence dashboard: `submission/evidence/scrdashboard.png` (đủ 6 panel: latency, traffic, errors, cost, tokens, quality — tên panel + time range hiển thị rõ, cả 6 panel đều OK: latency P95=151ms, traffic 10 req/phút, error_rate_pct=0.00% (0/10), cost $0.0181, tokens 330 in/1138 out, quality mean 0.88).
 - SLO đã chọn và lý do: [D điền]
 - Alert rules và runbook: [D điền]
 
