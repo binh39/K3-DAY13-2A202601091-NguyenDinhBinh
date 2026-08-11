@@ -7,10 +7,11 @@
 - Commit SHA cuối:
 - Thành viên và vai trò:
   - Đồng Đại Huy (2A202601901) — API & Middleware: triển khai CP1 Middleware, gán Correlation ID và bổ sung exception handler mở rộng.
+  - Phạm Đức Trung (2A202601253) — Security Engineer: triển khai PII scrubbing, mở rộng regex PII và kiểm chứng log không lộ dữ liệu nhạy cảm.
 
 ## 2. Kết quả kỹ thuật
 
-- Điểm `validate_logs.py`:
+- Điểm `validate_logs.py`: 30/100 (baseline CP0, trước khi hoàn thiện correlation ID và log enrichment)
 - Tổng số traces:
 - Số PII leak còn lại:
 - Link/đường dẫn dashboard:
@@ -54,3 +55,4 @@ Với mỗi thành viên, ghi rõ nhiệm vụ và link commit/PR tương ứng.
 | Thành viên | Phần việc | Commit/PR | Điều đã học |
 |---|---|---|---|
 | Đồng Đại Huy (2A202601901) | CP1 Middleware; tạo, kiểm tra và truyền Correlation ID; bổ sung exception handler an toàn; viết test cho middleware và lỗi request | Chưa commit/PR riêng | Cách dùng middleware và contextvars để gắn correlation ID xuyên suốt request, xử lý lỗi an toàn và kiểm chứng bằng test |
+| Phạm Đức Trung (2A202601253) | CP1 PII Scrubbing: thêm pattern passport/địa chỉ Việt Nam; bật scrubber trước khi ghi JSON; scrub dữ liệu lồng nhau và bổ sung test PII/logging | `add4bfb` — feat: xong viec thanh vien B | Che PII tại logging boundary, giữ schema log ổn định và kiểm chứng dữ liệu nhạy cảm không lọt qua các field lồng nhau |
