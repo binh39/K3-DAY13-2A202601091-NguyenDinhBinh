@@ -4,11 +4,13 @@
 
 - Tên nhóm: _F1 Speed_
 - Repository URL: https://github.com/binh39/K3-DAY13-2A202601091-NguyenDinhBinh
-- Commit SHA phần evidence cuối: `e6ee041` (docs: finalize submission evidence and file paths)
+- Commit SHA phần evidence cuối: `1a78c73` (docs: record final evidence commit)
 - Thành viên và vai trò:
   - Đồng Đại Huy (2A202601901) — API & Middleware: triển khai CP1 Middleware, gán Correlation ID và bổ sung exception handler mở rộng.
   - Phạm Đức Trung (2A202601253) — Security Engineer: triển khai PII scrubbing, mở rộng regex PII và kiểm chứng log không lộ dữ liệu nhạy cảm.
-  - Nguyễn Đình Bình (2A202601091) — SRE & Alerts Engineer: thiết lập SLO, viết alert rules symptom-based và runbook điều tra/giảm thiểu sự cố.
+  - Nguyễn Quang Tường (2A202601597) — Metrics & Dashboard Engineer: viết `scripts/build_dashboard.py`, tính đủ 6 nhóm chỉ số theo `config/dashboard.yaml` và thu thập evidence dashboard.
+  - Phạm Đình Minh (2A202601979) — SRE & Alerts Engineer: thiết lập SLO, viết alert rules symptom-based và runbook điều tra/giảm thiểu sự cố.
+  - Nguyễn Đình Bình (2A202601091) — Incident Investigator: chạy load test, bọc trace sub-component RAG/LLM và dẫn dắt điều tra Challenge CP3 (Metrics → Traces → Logs).
 
 ## 2. Kết quả kỹ thuật
 
