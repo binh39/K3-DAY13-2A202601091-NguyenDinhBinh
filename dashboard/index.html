@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<title>Day 13 AI Observability</title>
+<style>
+  body { font-family: -apple-system, Segoe UI, sans-serif; margin: 0; padding: 24px;
+         background: #0b0f14; color: #e6edf3; }
+  h1 { font-size: 20px; margin-bottom: 4px; }
+  .meta-top { color: #8b949e; font-size: 13px; margin-bottom: 20px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .panel { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; }
+  .panel header { display: flex; justify-content: space-between; align-items: center; }
+  .panel h2 { font-size: 15px; margin: 0; }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+  .badge.pass { background: #1f6f43; color: #d3f5df; }
+  .badge.fail { background: #7d2d2d; color: #ffd7d7; }
+  .meta { color: #8b949e; font-size: 12px; margin: 8px 0 12px; }
+  .stats { display: flex; flex-direction: column; gap: 6px; }
+  .stat { display: flex; justify-content: space-between; font-size: 13px; }
+  .stat .label { color: #8b949e; }
+  .stat .value { font-weight: 600; }
+</style>
+</head>
+<body>
+  <h1>Day 13 AI Observability</h1>
+  <p class="meta-top">
+    time_range: 60 min &middot; refresh: 30s &middot;
+    window start: 2026-08-11 02:55:58 UTC &middot; generated: 2026-08-11 03:55:58 UTC &middot;
+    events in window: 35
+  </p>
+  <div class="grid">
+    
+            <section class="panel">
+              <header>
+                <h2>Latency percentiles</h2>
+                <span class="badge pass">OK</span>
+              </header>
+              <p class="meta">unit: ms &middot;
+                threshold: p95 lte 3000
+                &middot; actual: 150.00</p>
+              <div class="stats"><div class='stat'><span class='label'>P50</span><span class='value'>150.0 ms</span></div><div class='stat'><span class='label'>P95</span><span class='value'>150.0 ms</span></div><div class='stat'><span class='label'>P99</span><span class='value'>150.0 ms</span></div></div>
+            </section>
+            
+            <section class="panel">
+              <header>
+                <h2>Request traffic</h2>
+                <span class="badge pass">OK</span>
+              </header>
+              <p class="meta">unit: requests_per_minute &middot;
+                threshold: rate_per_minute gte 1
+                &middot; actual: 16.00</p>
+              <div class="stats"><div class='stat'><span class='label'>Requests (window)</span><span class='value'>16</span></div><div class='stat'><span class='label'>Rate / minute</span><span class='value'>16.00</span></div></div>
+            </section>
+            
+            <section class="panel">
+              <header>
+                <h2>Error rate and breakdown</h2>
+                <span class="badge fail">VUOT NGUONG</span>
+              </header>
+              <p class="meta">unit: percent &middot;
+                threshold: error_rate_pct lte 2
+                &middot; actual: 37.50</p>
+              <div class="stats"><div class='stat'><span class='label'>Error rate</span><span class='value'>37.50 %</span></div><div class='stat'><span class='label'>Failed / Received</span><span class='value'>6 / 16</span></div><div class='stat'><span class='label'>By error_type</span><span class='value'>RuntimeError=6</span></div></div>
+            </section>
+            
+            <section class="panel">
+              <header>
+                <h2>Cost over time</h2>
+                <span class="badge pass">OK</span>
+              </header>
+              <p class="meta">unit: usd &middot;
+                threshold: total lte 2.5
+                &middot; actual: 0.02</p>
+              <div class="stats"><div class='stat'><span class='label'>Total</span><span class='value'>$0.0190</span></div><div class='stat'><span class='label'>Avg / request</span><span class='value'>$0.0019</span></div></div>
+            </section>
+            
+            <section class="panel">
+              <header>
+                <h2>Input and output tokens</h2>
+                <span class="badge pass">OK</span>
+              </header>
+              <p class="meta">unit: tokens &middot;
+                threshold: sum_by_field lte 50000
+                &middot; actual: 1199.00</p>
+              <div class="stats"><div class='stat'><span class='label'>Tokens in (sum)</span><span class='value'>330</span></div><div class='stat'><span class='label'>Tokens out (sum)</span><span class='value'>1199</span></div></div>
+            </section>
+            
+            <section class="panel">
+              <header>
+                <h2>Quality proxy</h2>
+                <span class="badge pass">OK</span>
+              </header>
+              <p class="meta">unit: score_0_to_1 &middot;
+                threshold: mean gte 0.75
+                &middot; actual: 0.88</p>
+              <div class="stats"><div class='stat'><span class='label'>Mean quality_score</span><span class='value'>0.880</span></div></div>
+            </section>
+            
+  </div>
+</body>
+</html>

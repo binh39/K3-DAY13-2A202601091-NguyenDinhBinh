@@ -33,10 +33,10 @@
 
 ## 5. Dashboard, SLO và alerts
 
-- Kết quả `validate_dashboard.py`:
-- Evidence dashboard:
-- SLO đã chọn và lý do:
-- Alert rules và runbook:
+- Kết quả `validate_dashboard.py`: HỢP LỆ: 6/6 panel có trong dashboard contract. (xem `submission/evidence/validate_dashboard_output.txt`)
+- Evidence dashboard: `submission/evidence/screendashboard.png` (đủ 6 panel: latency, traffic, errors, cost, tokens, quality — tên panel + time range hiển thị rõ). Lưu ý: ảnh chụp lúc panel Errors đang ở 37.50% (VUOT NGUONG) vì log có lẫn dữ liệu từ một đợt test bật incident `tool_fail` để kiểm chứng cơ chế threshold; không phản ánh trạng thái lỗi thật của hệ thống.
+- SLO đã chọn và lý do: [D điền]
+- Alert rules và runbook: [D điền]
 
 ## 6. Điều tra challenge
 
@@ -56,3 +56,4 @@ Với mỗi thành viên, ghi rõ nhiệm vụ và link commit/PR tương ứng.
 |---|---|---|---|
 | Đồng Đại Huy (2A202601901) | CP1 Middleware; tạo, kiểm tra và truyền Correlation ID; bổ sung exception handler an toàn; viết test cho middleware và lỗi request | Chưa commit/PR riêng | Cách dùng middleware và contextvars để gắn correlation ID xuyên suốt request, xử lý lỗi an toàn và kiểm chứng bằng test |
 | Phạm Đức Trung (2A202601253) | CP1 PII Scrubbing: thêm pattern passport/địa chỉ Việt Nam; bật scrubber trước khi ghi JSON; scrub dữ liệu lồng nhau và bổ sung test PII/logging | `add4bfb` — feat: xong viec thanh vien B | Che PII tại logging boundary, giữ schema log ổn định và kiểm chứng dữ liệu nhạy cảm không lọt qua các field lồng nhau |
+| Nguyễn Quang Tường (2A202601597) | CP1/CP2 Metrics & Dashboard: đo `error_rate_pct` từ `data/logs.jsonl`, viết `scripts/build_dashboard.py` tự tính đủ 6 nhóm chỉ số (latency, traffic, errors, cost, tokens, quality) theo contract `config/dashboard.yaml`, chạy `validate_dashboard.py` và thu thập evidence (`submission/evidence/screendashboard.png`, `validate_dashboard_output.txt`) | Chưa commit/PR riêng | Cách định nghĩa và tính `error_rate_pct`/percentile latency thống nhất giữa nhiều nguồn (log thô, `/metrics`, dashboard), và cách ràng buộc một dashboard tự dựng vào đúng contract YAML để pass validator |
