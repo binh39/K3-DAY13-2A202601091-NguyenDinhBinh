@@ -20,3 +20,20 @@ def test_scrub_common_vietnamese_phone_formats() -> None:
         out = scrub_text(f"Contact: {phone_number}")
         assert phone_number not in out
         assert "REDACTED_PHONE_VN" in out
+
+
+def test_scrub_passport_number() -> None:
+    passport = "B12345678"
+
+    out = scrub_text(f"Passport number: {passport}")
+
+    assert passport not in out
+    assert "REDACTED_PASSPORT" in out
+
+
+def test_scrub_vietnamese_address_keywords() -> None:
+    out = scrub_text("Địa chỉ: số nhà 12, phường Cầu Giấy, Hà Nội")
+
+    assert "số nhà" not in out
+    assert "phường" not in out
+    assert out.count("REDACTED_ADDRESS_VN") == 2

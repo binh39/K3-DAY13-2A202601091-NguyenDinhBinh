@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import os
+import time
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
-from structlog.contextvars import bind_contextvars
+from structlog.contextvars import bind_contextvars, clear_contextvars
 
 from .agent import LabAgent
 from .incidents import disable, enable, status
@@ -42,52 +43,86 @@ async def metrics() -> dict:
     return snapshot()
 
 
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    """Return a safe, traceable response for unexpected application errors."""
+
+    error_type = type(exc).__name__
+    record_error(error_type)
+    correlation_id = getattr(request.state, "correlation_id", "req-unknown")
+    started_at = getattr(request.state, "request_started_at", None)
+    elapsed_ms = (
+        (time.perf_counter() - started_at) * 1000
+        if isinstance(started_at, (int, float))
+        else None
+    )
+    bind_contextvars(correlation_id=correlation_id)
+    try:
+        log.error(
+            "request_failed",
+            service="api",
+            error_type=error_type,
+            payload={
+                "method": request.method,
+                "path": request.url.path,
+            },
+        )
+    finally:
+        clear_contextvars()
+
+    headers = {"x-request-id": correlation_id}
+    if elapsed_ms is not None:
+        headers["x-response-time-ms"] = f"{elapsed_ms:.2f}"
+    return JSONResponse(
+        status_code=500,
+        content={
+            "detail": "Internal server error",
+            "correlation_id": correlation_id,
+        },
+        headers=headers,
+    )
+
+
 @app.post("/chat", response_model=ChatResponse)
 async def chat(request: Request, body: ChatRequest) -> ChatResponse:
-    # TODO: Enrich logs with request context (user_id_hash, session_id, feature, model, env)
-    # bind_contextvars(...)
+    bind_contextvars(
+        user_id_hash=hash_user_id(body.user_id),
+        session_id=body.session_id,
+        feature=body.feature,
+        model=agent.model,
+        env=os.getenv("APP_ENV", "dev"),
+    )
     
     log.info(
         "request_received",
         service="api",
         payload={"message_preview": summarize_text(body.message)},
     )
-    try:
-        result = agent.run(
-            user_id=body.user_id,
-            feature=body.feature,
-            session_id=body.session_id,
-            message=body.message,
-        )
-        log.info(
-            "response_sent",
-            service="api",
-            latency_ms=result.latency_ms,
-            tokens_in=result.tokens_in,
-            tokens_out=result.tokens_out,
-            cost_usd=result.cost_usd,
-            quality_score=result.quality_score,
-            payload={"answer_preview": summarize_text(result.answer)},
-        )
-        return ChatResponse(
-            answer=result.answer,
-            correlation_id=request.state.correlation_id,
-            latency_ms=result.latency_ms,
-            tokens_in=result.tokens_in,
-            tokens_out=result.tokens_out,
-            cost_usd=result.cost_usd,
-            quality_score=result.quality_score,
-        )
-    except Exception as exc:  # pragma: no cover
-        error_type = type(exc).__name__
-        record_error(error_type)
-        log.error(
-            "request_failed",
-            service="api",
-            error_type=error_type,
-            payload={"detail": str(exc), "message_preview": summarize_text(body.message)},
-        )
-        raise HTTPException(status_code=500, detail=error_type) from exc
+    result = agent.run(
+        user_id=body.user_id,
+        feature=body.feature,
+        session_id=body.session_id,
+        message=body.message,
+    )
+    log.info(
+        "response_sent",
+        service="api",
+        latency_ms=result.latency_ms,
+        tokens_in=result.tokens_in,
+        tokens_out=result.tokens_out,
+        cost_usd=result.cost_usd,
+        quality_score=result.quality_score,
+        payload={"answer_preview": summarize_text(result.answer)},
+    )
+    return ChatResponse(
+        answer=result.answer,
+        correlation_id=request.state.correlation_id,
+        latency_ms=result.latency_ms,
+        tokens_in=result.tokens_in,
+        tokens_out=result.tokens_out,
+        cost_usd=result.cost_usd,
+        quality_score=result.quality_score,
+    )
 
 
 @app.post("/incidents/{name}/enable")
